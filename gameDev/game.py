@@ -8,12 +8,8 @@ import sys
 N, M = map(int, sys.stdin.readline().split())
 x, y, d = map(int, sys.stdin.readline().split()) # x : from north; y : from west
 directions = [0, 1, 2, 3]
-x += 1
-y += 1
 
-maps = [([1] + list(x for x in map(int, sys.stdin.readline().split())) + [1]) for i in range(N)]
-maps.insert(0, [1]*(M+2))
-maps.append([1]*(M+2))
+maps = [list(x for x in map(int, sys.stdin.readline().split())) for i in range(N)]
 print('Default setting successfully set')
 
 maps[x][y] = 1
@@ -30,10 +26,33 @@ while True:
     if nx < 0 or nx > N-1 or ny < 0 or ny > M-1: #if nx or ny are out of maps
         d = directions[d-1]
         continue
-
-    if maps[x+dx[0]][y+dy[0]] and maps[x+dx[1]][y+dy[1]] and maps[x+dx[2]][y+dy[2]] and maps[x+dx[3]][y+dy[3]]:
-        break #if all side of current position are sea.
-
+    
+    #Exception Handling
+    if x == 0 and y == 0:
+        if maps[x+dx[1]][y+dy[1]] and maps[x+dx[2]][y+dy[2]]:
+            break
+    elif x == 0 and y == M-1:
+        if maps[x+dx[2]][y+dy[2]] and maps[x+dx[3]][y+dy[3]]:
+            break
+    elif x == N-1 and y == 0:
+        if maps[x+dx[0]][y+dy[0]] and maps[x+dx[1]][y+dy[1]]:
+            break
+    elif x == N-1 and y == M-1 :
+        if maps[x+dx[0]][y+dy[0]] and maps[x+dx[3]][y+dy[3]]:
+            break
+    elif x == 0:
+        if maps[x+dx[1]][y+dy[1]] and maps[x+dx[2]][y+dy[2]] and maps[x+dx[3]][y+dy[3]]:
+            break
+    elif x == N-1:
+        if maps[x+dx[0]][y+dy[0]] and maps[x+dx[1]][y+dy[1]] and maps[x+dx[3]][y+dy[3]]:
+            break
+    elif y == 0:
+        if maps[x+dx[0]][y+dy[0]] and maps[x+dx[1]][y+dy[1]] and maps[x+dx[2]][y+dy[2]]:
+            break
+    elif y == M-1:
+        if maps[x+dx[0]][y+dy[0]] and maps[x+dx[2]][y+dy[2]] and maps[x+dx[3]][y+dy[3]]:
+            break
+    
     if maps[nx][ny] == 1:
         d = directions[d-1]
         continue
