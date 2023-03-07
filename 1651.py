@@ -24,12 +24,18 @@ for i in val:
     for key, value in counter.items():
         if value == i:
             result.append(len(key))
-try:
-    if max(val) < 3:
+
+
+if '-1' in S:
+    print(0)
+else:
+
+    try:
+        if max(val) < 3:
+            print(-1)
+        else:
+            print(min(result))
+    except:
         print(-1)
-    else:
-        print(min(result))
-except:
-    print(-1)
     
 
