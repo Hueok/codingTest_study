@@ -1,44 +1,39 @@
+//중복 검사를 하면서 pushback 하는 것보다 sort를 한 후에 중복 검사를 하는 것이 더 빠르다.
+//다만 이럴 경우, vector에는 중복된 요소가 남아있기 때문에 출력할 때 중복 검사를 해주어야 한다.
+//boj 1181
+//2023.12.30
+//Creator: YoonHuoek
 #include <iostream>
 #include <string>
+#include <algorithm>
+#include <vector>
 
-bool sortDictly(std::string& word1 , std::string& word2){
-    return word1 < word2;
-    //return 0 if word1 is bigger. else return 1
-}
-void swap(std::string& word1, std::string& word2){
-    std::string tmp = word1;
-    word1 = word2;
-    word2 = tmp;
-}
 
-void clearDuplication(){}
+bool compare(std::string& word1, std::string& word2){
+    if(word1.length() == word2.length()){
+        return word1 < word2;
+    } else{
+        return word1.length() < word2.length();
+    }
+}
 
 int main(){
     int N;
     std::cin >> N;
-    std::string* box = new std::string[N];
-    for(int i=0; i<N; i++){
-        std::cin >> box[i];
-    }
 
+    std::vector<std::string> arr;
+    std::string target;
     for(int i=0; i<N; i++){
-        int tmp = N-1; 
-        for(int j=i+1; j<N; j++){
-            if(box[j].length() < box[tmp].length()){
-                tmp = j;
-            }
-            else if(box[j].length() == box[tmp].length()){
-                tmp = sortDictly(box[j], box[tmp]) ? j : tmp; 
-            }
+        std::cin >> target;
+        arr.push_back(target);
+    }
+    std::sort(arr.begin(), arr.end(), compare);
+
+    for(auto it=arr.begin(); it!=arr.end(); it++){
+        if(it==arr.begin() || *it != *(it-1)){
+            std::cout << *it << std::endl;
         }
-        swap(box[i], box[tmp]);
-    }
-
-    std::cout << "TEST___________----------------" << std::endl;
-    for(int i=0; i<N; i++){
-        std::cout << box[i] << std::endl;
     }
 
     return 0;
-
 }
