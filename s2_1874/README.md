@@ -70,3 +70,4 @@ int main(){
     // std::cout << std::endl;
 }
 ```
+> #### 답을 std::string 형식으로 반복문에서 출력하지 않고 한번에 출력하여 시간절약
