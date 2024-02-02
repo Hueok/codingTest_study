@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <string>
+//#include <climits>
 
 unsigned long get_modulo(int pivot, int idx){
     unsigned long modulo = pivot;
@@ -11,10 +12,10 @@ unsigned long get_modulo(int pivot, int idx){
     return modulo;
 }
 
-int hash(std::string& raw){
+int hash(std::string& raw, int L){
   int pivot;
   unsigned long sum = 0;
-  for(int i=0; i<raw.length(); i++){
+  for(int i=0; i<L; i++){
     pivot = raw[i] - 96;
     sum  += get_modulo(pivot, i);
     //std::cout << "current i : " << i << ", and sum : " << sum << std::endl;
@@ -30,8 +31,9 @@ int main(){
   std::cin >> L;
   std::cin >> data;
 
-  std::cout << hash(data) << std::endl;
+  std::cout << hash(data, L) << std::endl;
 
   return 0;
+  //std::cout << ULONG_MAX;
 
 }
