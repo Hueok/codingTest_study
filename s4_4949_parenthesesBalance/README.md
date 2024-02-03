@@ -1,7 +1,7 @@
 ## 문제 : 
 > #### checkVPS문제랑 비슷한데, 괄호의 종류가 2가지로 늘어남. 또한, valid한 두 괄호가 있을 때, 그 사이에 있는 문자열도 valid해야함.
 
-## 풀이 : #Full_implementation, #Hard_coding
+## 풀이1 : #Full_implementation, #Hard_coding
 > #### 내 기준으로 매우 까다로웠던 문제.
 
 ### idea :
@@ -10,7 +10,7 @@
 > #### 소괄호와 대괄호에 각각 서로를 소유할 수 있는 체계를 만들어 오브젝트로 선언함.
 > #### 두개의 스택을 만들고 소괄호와 대괄호를 각각 관리하면서 판단...
 
-## Code :
+## Code1 :
 ```cpp
 #include <iostream>
 #include <string>
@@ -78,3 +78,48 @@ int main(){
     }
 }
 ```
+> #### 뭔가 코드가 비효율적인 느낌.
+----------------------------------------------------------------
+## 풀이2 : #implementation
+> #### 풀이 1을 간결화한 버전?
+
+### idea :
+> #### 괄호가 닫힐 때, 가장 근접해있는 오픈 상태의 괄호의 종류가 다르면 invalid.
+
+## Code2 :
+```cpp
+#include <iostream>
+#include <vector>
+#include <string>
+
+bool checkVPS(const std::string& sen){
+    std::vector<char> storage;
+    for(auto c : sen){
+        if(c=='(') storage.push_back('(');
+        else if(c=='[') storage.push_back('[');
+        else if(c==')'){
+            if(storage.empty() || storage.back()=='[') return false;
+            storage.pop_back();
+        }
+        else if(c==']'){
+            if(storage.empty() || storage.back()=='(') return false;
+            storage.pop_back();
+        }
+    }
+    return storage.empty() ? true : false;
+}
+
+int main(){
+    std::string sentence;
+
+    while(true){
+        std::getline(std::cin, sentence, '.');
+        std::cin.ignore();
+        if(sentence.empty()) break;
+        std::string result = checkVPS(sentence) ? "yes" : "no";
+        std::cout << result << std::endl;
+    }
+
+}
+```
+
