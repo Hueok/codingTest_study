@@ -78,3 +78,13 @@ int main(){
     for(auto element : ans) std::cout << element << std::endl;
 }
 ```
+#### 방향 정보를 담는 배열을 따로 만들면 for문으로 코드를 간략히 작성할 수 있다.
+```cpp
+dx = {0, 0, -1, 1};
+dy = {-1, 1, 0, 0};
+for(int i=0; i<4; i++){
+    new_x = x + dx[i]
+    new_y = y + dy[i]
+    dfs(new_x, new_y)
+}
+```
