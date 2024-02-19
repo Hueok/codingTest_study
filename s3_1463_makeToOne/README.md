@@ -66,3 +66,54 @@ int main(){
     std::cout << bfs(N) << std::endl;
 }
 ```
+----------------------------
+## 외부 포스팅 보면서 공부한것들
+#### BFS함수에서 queue에 pair를 담아서 인접도를 표현했는데, visited배열의 타입을 bool이 아닌 int로 설정하면 인접도를 visited배열에 대신 저장하면서 방문여부도 동시에 확인할 수 있다.
+```cpp
+int bfs2(int n){
+    int visited[1000001] = {0, };
+    std::queue<int> q;
+    q.push(n);
+    visited[n] = 1;
+    while(!q.empty()){
+        n=q.front();
+        q.pop();
+        if(n==1){
+            return visited[1] -1;
+        }
+        if(n%3 == 0 && !visited[n/3]){
+            q.push(n/3);
+            visited[n/3] = visited[n] + 1;
+        }
+        if(n%2 == 0 && !visited[n/2]){
+            q.push(n/2);
+            visited[n/2] = visited[n] + 1;
+        }
+        if(!visited[n-1]){
+            q.push(n-1);
+            visited[n-1] = visited[n] + 1;
+        }
+    }
+}
+```
+
+#### DP전략으로 문제를 풀이할 수 있다. <<< 오히려 DP가 이 문제에 대한 standard appoach인듯? time : `O(N)`
+#### 다만 N이 커짐에 따라 메모리 사용량이 매우 커질 수 있
+```cpp
+#include <iostream>
+#include <algorithm>
+
+int dp[1000001];
+
+int main(){
+    int N;
+    std::cin >> N;
+    dp[1] = 0;
+    for(int i=2; i<N+1; i++){
+        dp[i] = dp[i-1] + 1;
+        if(i%2==0) dp[i] = std::min(dp[i/2]+1, dp[i]);
+        if(i%3==0) dp[i] = std::min(dp[i/3]+1, dp[i]);
+    }
+    std::cout << dp[N] << std::endl;
+}
+```
