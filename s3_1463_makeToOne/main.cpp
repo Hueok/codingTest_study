@@ -44,8 +44,34 @@ int bfs(int n){
     }
 }
 
+int bfs2(int n){
+    int visited[1000001] = {0, };
+    std::queue<int> q;
+    q.push(n);
+    visited[n] = 1;
+    while(!q.empty()){
+        n=q.front();
+        q.pop();
+        if(n==1){
+            return visited[1] -1;
+        }
+        if(n%3 == 0 && !visited[n/3]){
+            q.push(n/3);
+            visited[n/3] = visited[n] + 1;
+        }
+        if(n%2 == 0 && !visited[n/2]){
+            q.push(n/2);
+            visited[n/2] = visited[n] + 1;
+        }
+        if(!visited[n-1]){
+            q.push(n-1);
+            visited[n-1] = visited[n] + 1;
+        }
+    }
+}
+
 int main(){
     int N;
     std::cin >> N;
-    std::cout << bfs(N) << std::endl;
+    std::cout << bfs2(N) << std::endl;
 }
