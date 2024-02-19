@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <algorithm>
 
 typedef std::vector<std::vector<int>> REL;
 REL relation(101);
@@ -11,22 +12,20 @@ void reset(std::vector<bool>& visited){
     }
 }
 
-int count = 0;
 int bfs(int n, int target){
     bool visited[101] = {false, };
-    int cnt = 0;
-    std::queue<int> q;
-    q.push(n);
+    std::queue<std::pair<int, int>> q;
+    q.push({n, 0});
     while(!q.empty()){
-        n = q.front();
+        n = q.front().first;
+        int d = q.front().second;
         q.pop();
         if(n == target){
-            count = cnt;
-            break;
+            return d;
         }
         for(auto element : relation[n]){
             if(!visited[element]){
-                q.push(element);
+                q.push({element, d+1});
                 visited[element] = true;
             }
         }
@@ -42,6 +41,16 @@ int main(){
         relation[b].push_back(a);
         relation[a].push_back(b);
     }
-    int lhs = 1;
-    int rhs = 2;
+    std::vector<int> result(N+1, 0);
+
+    for(int i=1; i<N+1; i++){
+        for(int j=1; j<N+1; j++){
+            if(i==j) continue;
+            // std::cout << i << " to " << j << " : ";
+            // std::cout << bfs(i, j) << std::endl;
+            result[i] += bfs(i, j);
+        }
+    }
+    std::cout << std::distance(result.begin(), std::min_element(result.begin()+1, result.end())) << std::endl;
+
 }
