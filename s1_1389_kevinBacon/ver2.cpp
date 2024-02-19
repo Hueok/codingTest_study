@@ -11,6 +11,7 @@ void reset(std::vector<bool>& visited){
     }
 }
 
+int count = 0;
 int bfs(int n, int target){
     bool visited[101] = {false, };
     int cnt = 0;
@@ -19,13 +20,17 @@ int bfs(int n, int target){
     while(!q.empty()){
         n = q.front();
         q.pop();
-        if(!visited[n]){
-            visited[n] = true;
-            cnt++;
-            for(const auto& value : relation[n]) if(!visited[value]) q.push(value); 
+        if(n == target){
+            count = cnt;
+            break;
+        }
+        for(auto element : relation[n]){
+            if(!visited[element]){
+                q.push(element);
+                visited[element] = true;
+            }
         }
     }
-
 }
 
 int main(){
