@@ -57,38 +57,31 @@ int main(){
 ```
 ----------------------
 ## 외부 포스팅 보면서 공부한것들
-#### 비트마스킹으로 풀 수 있음. 문제의 메모리조건이 엄격하면 떠올려볼만 한 발상임.
-#### 비트마스킹은 집합의 요소가 있는지 없는지 여부를 해당 인덱스의 비트에 표현하는 기법
-#### 내가 작성한 코드는 아니나, 공부용으로 첨부
+> #### 비트마스킹으로 풀 수 있음. 문제의 메모리조건이 엄격하면 떠올려볼만 한 발상임.
+> #### 비트마스킹은 집합의 요소가 있는지 없는지 여부를 해당 인덱스의 비트에 표현하는 기법
+> #### 내가 작성한 코드는 아니나, 공부용으로 첨부
 ```cpp
 // https://nanyoungkim.tistory.com/47
 #include <iostream>
 #include <cstring>
  
 using namespace std;
- 
- 
+
 //비트마스크로 풀기
- 
-int main(){
-    
+int main()
     ios_base::sync_with_stdio(0);
     cin.tie(0);
     
     string str = "";
     int M, x;
-    
     int S = 0;
-   
     cin >> M;
     for(int i = 0; i<M; i++){
         cin >> str;
-        
         if(str=="add"){
             cin >> x;
             S |= (1<<x);
         }
-        
         else if(str=="remove"){
             cin >> x;
             S &= ~(1<<x);
@@ -116,7 +109,6 @@ int main(){
             S = 0;
         }       
     }
-    
     return 0;
 }
 ```
