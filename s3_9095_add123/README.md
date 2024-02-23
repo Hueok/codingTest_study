@@ -37,3 +37,31 @@ int main(){
     }
 }
 ```
+-----------------
+## Study with external post
+> #### n이 매우 커질 수 있는 문제라면 위 방식으로 풀면 time out 날 것이다. (중복되는 v에 대하여 매번 계산하므로)
+> #### -> 이럴땐 memoization 및 DP전략 사용
+
+### DP로 짠 코드
+```cpp
+#include <iostream>
+#include <vector>
+
+int main(){
+    std::vector<int> dp(12, 0);
+    int T, n;
+    std::cin >> T;
+    dp[1] = 1;
+    dp[2] = 2;
+    dp[3] = 4;
+    for(int i=4; i<12; i++){
+        dp[i] = dp[i-1] + dp[i-2] + dp[i-3];
+    }
+    for(int i=0; i<T; i++){
+        std::cin >> n;
+        std::cout << dp[n] << std::endl;
+    }
+}
+```
+
+
