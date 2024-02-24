@@ -70,3 +70,24 @@ int bino_coef(int n, int k){
     return choose(0,0);
 }
 ```
+-----------------------
+### DP로 매우 쉽게 푸는 방법이 있었다!
+> #### 타일의 길이가 N일때, N-1개의 타일을 채우는 경우의 수에서 세로 사각형을 추가하는 경우와 N-2개의 타일을 채우는 경우의 수에서 가로 사각형 두개를 추가하는 경우만 존재한다.
+> #### -> 따라서 P(N) = P(N-1) + P(N-2) 점화식으로 나타내어지므로 DP로 top-down이든 bottom-up이든 구현하면 쉽게 풀린다.
+### DP풀이 코드 :
+```cpp
+#include <iostream>
+using namespace std;
+int main(){
+    int n;
+    int dp[1002];
+    dp[1] = 1;
+    dp[2] = 2;
+    cin >> n;
+    for (int i = 3; i <= n;i++){ // 점화식
+        dp[i] = (dp[i - 1] + dp[i - 2])%10007; // 나머지 공식
+    }
+    cout << dp[n];
+    return 0;
+}
+```
