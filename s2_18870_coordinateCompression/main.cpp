@@ -1,22 +1,30 @@
 #include <iostream>
 #include <vector>
+#include <map>
 #include <set>
 #include <algorithm>
+#include <string>
 
 int main(){
     std::ios::sync_with_stdio(false);
-    std::cin.tie(NULL);
+    std::cin.tie(NULL); std::cout.tie(NULL);
     int N;
     std::cin >> N;
-    std::vector<int> arr;
+    std::vector<int> arr(N);
     std::set<int> sorted;
     for(int i=0; i<N; i++){
-        int tmp;
-        std::cin >> tmp;
-        arr.push_back(tmp);
-        sorted.insert(tmp);
+        std::cin >> arr[i];
+        sorted.insert(arr[i]);
     }
+    std::map<int, int> positions;
+    // <value, order>
+    int pos=0;
+    for(const auto& element : sorted){
+        positions[element] = pos++;
+    }
+    std::string result = "";
     for(const auto& element : arr){
-        std::cout << std::distance(sorted.begin(), std::find(sorted.begin(), sorted.end(), element)) << " ";
+        result += std::to_string(positions[element]) + " ";
     }
+    std::cout << result << std::endl;
 }
