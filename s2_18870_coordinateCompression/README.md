@@ -45,4 +45,5 @@ int main(){
 ```
 #### 문제풀이 후 알게되었는데, std::sort()는 어느 컨테이너를 대상으로는 Linear Search를 수행하므로 `O(N)`이다. std::set을 대상으로 `O(log N)`을 기대하기 위해서는 std::set::find()를 사용해야한다.
 #### 또, std::distance() 자체도 일반적으로 `O(N)`이다. 그러나 만약 Container가 Random Access Iterator를 제공한다면, `O(1)`이다.
+#### std::distance()를 대신하기 위해 두 반복자를 구해서 빼는 연산을 하려면 해당 컨테이너가 Random Access Iterator를 제공해야한다. 따라서 BST기반의 std::set에서는 std::distance()만 쓸 수 있다.
 #### -> 처음 작성한 코드는 std::set을 대상으로 일반 탐색인 std::find()를 사용하였고, Bidirectioanl Iterator만을 제공하는 컨테이너에 std::distance()를 사용했으므로 당연히 시간 초과가 나는것이다.
