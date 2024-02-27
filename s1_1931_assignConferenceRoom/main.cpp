@@ -1,45 +1,37 @@
 #include <iostream>
 #include <vector>
-#include <set>
 #include <algorithm>
-#include <map>
 
 bool comp(const std::pair<int, int>& lhs, const std::pair<int, int>& rhs){
-    return lhs.second - lhs.first < rhs.second - rhs.first;
+    if(lhs.second == rhs.second){
+        return lhs.first < rhs.first;
+    }
+    return lhs.second < rhs.second;
 }
-
-// bool fill_schedule(std::pair<int, int>& element, std::vector<bool>& time_table){
-//     if(element.first == element.second){
-//         time_table[element.first] = true;
-//         return true;
-//     }
-//     if(time_table[element.first+1] or time_table[element.second-1]) return false;
-//     for(int i=element.first; i<element.second+1; i++){
-//         time_table[i] = true;
-//     }
-//     // std::cout << "FILLED SCHEDULE : (" << element.first << ", " << element.second << ")" << std::endl;
-//     return true;
-// }
-
 int main(){
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(NULL);
     int N;
     std::cin >> N;
-    std::map<int, std::set<int>> schedules;
-    int last = -1;
+    std::vector<std::pair<int, int>> schedules;
+    //<startTime, endTime>
     for(int i=0; i<N; i++){
         int a, b;
         std::cin >> a >> b;
-        schedules[a].insert(b);
-        last = std::max(b, last);
+        schedules.push_back({a, b});
     }
-    int p = 0;
-    int cnt = 0;
-    while(p <= last){
-        if(!schedules[p].empty()){
-            std::cout << "FILLED SCHEDULE : (" << p << ", " << *(schedules[p].begin()) << ")" << std::endl;
-            p = *(schedules[p].begin());
+    std::sort(schedules.begin(), schedules.end(), comp);
+    // schedules.erase(std::unique(schedules.begin(), schedules.end()), schedules.end());
+    // for(const auto& element : schedules){
+    //     std::cout << element.first << ", " << element.second << std::endl;
+    // }
+    int cnt = 1;
+    int time = schedules.front().second;
+    for(int i=1; i<schedules.size(); i++){
+        if(schedules[i].first >= time){
             cnt++;
-        } else p++;
+            time = schedules[i].second;
+        }
     }
     std::cout << cnt << std::endl;
 }
