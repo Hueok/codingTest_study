@@ -4,18 +4,18 @@
 
 
 int N, M;
-bool isAllRipe(const std::vector<std::vector<int> >& field){
+bool isAllRipe(const std::vector<std::vector<std::pair<int,bool>>>& field){
     for(int i=0; i<N; i++){
         for(int j=0; j<M; j++){
-            if(field[i][j] == 0) return false;
+            if(field[i][j].first == 0) return false;
         }
     }
     return true;
 }
-void printField(const std::vector<std::vector<int> >& field){
+void printField(const std::vector<std::vector<std::pair<int, bool>>>& field){
     for(int i=0; i<N; i++){
         for(int j=0; j<M; j++){
-            std::cout << field[i][j] << " ";
+            std::cout << field[i][j].first << " ";
         }
         std::cout << "\n";
     }
@@ -25,13 +25,14 @@ int main(){
     std::ios::sync_with_stdio(false);
     std::cin.tie(NULL);
     std::cin >> M >> N;
-    std::vector<std::vector<int> > field(N, std::vector<int>(M));
+    std::vector<std::vector<std::pair<int, bool>>> field(N, std::vector<std::pair<int, bool>>(M, {0, false}));
+    //<value, isVisited>
     std::queue<std::pair<int, int> > q;
-    std::vector<std::vector<int> > visited(N, std::vector<int>(M, 0));
+    
     for(int i=0; i<N; i++){
         for(int j=0; j<M; j++){
-            std::cin >> field[i][j];
-            if(field[i][j] == 1){
+            std::cin >> field[i][j].first;
+            if(field[i][j].first == 1){
                 q.push(std::make_pair(i, j));
             }
         }
@@ -47,11 +48,13 @@ int main(){
         for(int i=0; i<4; i++){
             int nx = x+D[i];
             int ny = y+D[3-i];
-            if(nx<0 or nx>=N or ny<0 or ny>=M or visited[nx][ny] or field[nx][ny]==-1) continue;
-            visited[nx][ny] = visited[x][y]+1;
-            if(field[nx][ny] == 0){
-                field[nx][ny]++;
-                cnt = visited[nx][ny];
+            if(nx<0 or nx>=N or ny<0 or ny>=M or field[nx][ny].first == -1 or field[nx][ny].second) continue;
+            field[nx][ny].second = true;
+            if(field[nx][ny].first == 0){
+                field[nx][ny].first = field[x][y].first+1;
+                cnt = field[nx][ny].first-1;
+            } else if(field[nx][ny].first>0){
+                field[nx][ny].first = field[x][y].first;
             }
             q.push(std::make_pair(nx, ny));
         }
