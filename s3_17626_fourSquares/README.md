@@ -46,3 +46,31 @@ int main(){
     std::cout << ans << std::endl;
 }
 ```
+---------------------------------
+## Study with external post
+### DP로 푸는 방법도 있더라. 
+### IDEA :
+> #### n = a^2 + b 라면 dp[n] = dp[b] + 1다.
+> #### 따라서 n보다 작은 제곱수 a2에 대해 dp[b]값이 최소일 때 dp[n]이 최소이다.
+> #### b = n - a2 이므로 min(dp[n]) = min(dp[n - a2]) + 1 이다.
+
+## Code :
+```cpp
+#include <iostream>
+#include <algorithm>
+
+int main(){
+    int dp[50001];
+    int n; std::cin >> n;
+    dp[1] = 1;
+    for(int i=2; i<=n; i++){
+        dp[i] = 4;
+        for(int j=1; j*j<=i; j++){
+            dp[i] = std::min(dp[i], dp[i-j*j]);
+        }
+        dp[i]++;
+    }
+    std::cout << dp[n] << std::endl;
+}
+```
+#### 수학적 다양성에 의해 여러 풀이들이 있을 수 있다. 결국 구현하는 문제이므로 루트는 상관없다고 생각하지만 여러 시각으로 바라보는 연습은 늘 중요하다.
