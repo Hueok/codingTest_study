@@ -3,7 +3,7 @@
 #include <queue>
 #include <algorithm>
 
-typedef std::vector<std::vector<std::vector<std::pair<int, bool>>>> CONTAINER;
+typedef std::vector<std::vector<std::vector<int>>> CONTAINER;
 //{isRiped, isVisited}
 
 int Dx[6] = {1, -1, 0, 0, 0, 0};
@@ -24,7 +24,7 @@ void printField(CONTAINER& field){
     for(const auto& xy : field){
         for(const auto& x : xy){
             for(const auto& y : x){
-                std::cout << y.first << " ";
+                std::cout << y << " ";
             }
             std::cout << std::endl;
         }
@@ -37,7 +37,7 @@ bool isAllRiped(CONTAINER& field){
     for(const auto& xy : field){
         for(const auto& x : xy){
             for(const auto& y : x){
-                if(y.first == 0) return false;
+                if(y == 0) return false;
             }
         }
     }
@@ -51,15 +51,14 @@ int main(){
 
     int M, N, H;
     std::cin >> M >> N >> H;
-    CONTAINER field(H, std::vector<std::vector<std::pair<int, bool>>>(N, std::vector<std::pair<int, bool>>(M, {0, false})));
+    CONTAINER field(H, std::vector<std::vector<int>>(N, std::vector<int>(M, 0)));
     std::queue<Point> q;
     for(int i=0; i<H; i++){ // z
         for(int j=0; j<N; j++){ // x
             for(int k=0; k<M; k++){ // y
-                std::cin >> field[i][j][k].first;
-                if(field[i][j][k].first == 1){
+                std::cin >> field[i][j][k];
+                if(field[i][j][k] == 1){
                     q.push(Point(j,k,i));
-                    field[i][j][k].second = true;
                 }
             }
         }
@@ -73,11 +72,10 @@ int main(){
             int nx = n.x_ + Dx[i];
             int ny = n.y_ + Dy[i];
             int nz = n.z_ + Dz[i];
-            if(nx<0 || nx>=N || ny<0 || ny>=M || nz<0 || nz>=H || field[nz][nx][ny].first==-1 || field[nz][nx][ny].second) continue;
+            if(nx<0 || nx>=N || ny<0 || ny>=M || nz<0 || nz>=H || field[nz][nx][ny]!=0) continue;
             q.push(Point(nx, ny, nz));
-            field[nz][nx][ny].second = true;
-            field[nz][nx][ny].first = field[n.z_][n.x_][n.y_].first + 1;
-            max_day = std::max(max_day, field[nz][nx][ny].first);
+            field[nz][nx][ny] = field[n.z_][n.x_][n.y_] + 1;
+            max_day = std::max(max_day, field[nz][nx][ny]);
         }
     }
     if(isAllRiped(field)) std::cout << max_day-1 << std::endl;
