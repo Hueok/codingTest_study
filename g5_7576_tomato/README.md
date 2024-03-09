@@ -82,3 +82,76 @@ int main(){
     
 }
 ```
+----------------------------------
+## 2024-03-09 FIX
+#### 위 풀이는 사족이 많다. 필요 없는 동작까지 포함되어 있어서 메모리를 비효율적으로 사용할 뿐더러 연산횟수도 많다.
+#### 7569_3Dtomato 문제를 풀면서 갑자기 생각난 내용들을 적어본다.
+#### 방문정보를 따로 저장할 필요는 없었다! 토마토의 익음 정도가 0, 1로 표현되기 때문에 1 이상이면 방문했다고 생각해도 된다. 따라서 방문정보를 새로 저장할 필요는 없다.
+### 더 효율적인 코드
+```cpp
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <algorithm>
+
+
+int N, M;
+bool isAllRipe(const std::vector<std::vector<int>>& field){
+    for(int i=0; i<N; i++){
+        for(int j=0; j<M; j++){
+            if(field[i][j] == 0) return false;
+        }
+    }
+    return true;
+}
+void printField(const std::vector<std::vector<int>>& field){
+    for(int i=0; i<N; i++){
+        for(int j=0; j<M; j++){
+            std::cout << field[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
+int main(){
+    std::ios::sync_with_stdio(false);
+    std::cin.tie(NULL);
+    std::cin >> M >> N;
+    std::vector<std::vector<int>> field(N, std::vector<int>(M, 0));
+    //<value, isVisited>
+    std::queue<std::pair<int, int> > q;
+    
+    for(int i=0; i<N; i++){
+        for(int j=0; j<M; j++){
+            std::cin >> field[i][j];
+            if(field[i][j] == 1){
+                q.push(std::make_pair(i, j));
+            }
+        }
+    }
+    int D[4] = {1, -1, 0, 0};
+    int cnt = 1;
+    while(!q.empty()){
+        int x = q.front().first;
+        int y = q.front().second;
+        // std::cout << "day : " << cnt << " ------------" << std::endl;
+        // printField(field);
+        q.pop();
+        for(int i=0; i<4; i++){
+            int nx = x+D[i];
+            int ny = y+D[3-i];
+            if(nx<0 or nx>=N or ny<0 or ny>=M or field[nx][ny] != 0) continue;
+            // field[nx][ny].second = true;
+            field[nx][ny] = field[x][y]+1;
+            cnt = std::max(cnt, field[nx][ny]);
+            q.push(std::make_pair(nx, ny));
+        }
+    }
+    if(isAllRipe(field)){
+        std::cout << cnt-1 << std::endl;
+    } else {
+        std::cout << -1 << std::endl;
+    }
+    
+}
+```
