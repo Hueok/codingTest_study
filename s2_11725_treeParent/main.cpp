@@ -1,23 +1,37 @@
 #include <iostream>
 #include <vector>
-#include <string>
+#include <queue>
+#include <bitset>
+#define MAX_INPUT 100001
 
 int main(){
-    std::ios::sync_with_stdio(false);
-    std::cin.tie(NULL);
-
+    std::vector<int> graph[MAX_INPUT];
+    std::bitset<MAX_INPUT> bs;
+    bs.set(1);
+    std::queue<int> q;
     int N;
     std::cin >> N;
-    std::vector<int> tree(N+1, 0);
-    tree[1] = 1;
-
+    std::vector<int> ans(N+1, 0);
     int lhs, rhs;
     for(int i=0; i<N-1; i++){
         std::cin >> lhs >> rhs;
-        if(tree[lhs] > 0) tree[rhs] = lhs;
-        else tree[lhs] = rhs;
+        graph[lhs].push_back(rhs);
+        graph[rhs].push_back(lhs);
+    }
+    q.push(1);
+    while(!q.empty()){
+        int curr = q.front();
+        q.pop();
+        for(int tmp : graph[curr]){
+            if(bs.test(tmp)) continue;
+            ans[tmp] = curr;
+            bs.set(tmp);
+            q.push(tmp);
+        }
     }
     for(int i=2; i<N+1; i++){
-        std::cout << tree[i] << "\n";
+        std::cout << ans[i] << "\n";
     }
+
+    return 0;
 }
