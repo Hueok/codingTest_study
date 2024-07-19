@@ -18,7 +18,7 @@ void solve(std::vector<int>& nums, std::vector<int>& ans, int depth, int N, int 
     }
     for(int i=F; i<N; i++){
         ans.push_back(nums[i]);
-        solve(nums, ans, depth+1, N, M, i+1);
+        solve(nums, ans, depth+1, N, M, i);
         ans.pop_back();
     }
 }
